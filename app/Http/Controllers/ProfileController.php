@@ -21,5 +21,7 @@ class ProfileController extends Controller
        
         $user = Auth::user();
         $user->update($request->all());
+
+        return response()->json("Successfully updated User profile!");
     }
 }
