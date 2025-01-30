@@ -5,16 +5,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('auth')->group(function () {
+Route::post('signup', [AuthController::class, 'signup']);
 
-    Route::post('signup', [AuthController::class, 'signup']);
-
-    Route::post('login', [AuthController::class, 'login']);
-
-    Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-});
+Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
+        Route::get('logout', [AuthController::class, 'logout']);
 
         Route::get('profile', [ProfileController::class, 'show']);
 
@@ -28,5 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
             ->where('id', '[0-9]+');
         
         Route::post('recipes/{id}/rate', [RecipeController::class, 'rate'])
+            ->where('id', '[0-9]+');
+
+        Route::post('recipes/{id}/save', [ProfileController::class, 'save'])
             ->where('id', '[0-9]+');
 });
