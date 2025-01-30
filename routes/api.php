@@ -9,6 +9,11 @@ Route::post('signup', [AuthController::class, 'signup']);
 
 Route::post('login', [AuthController::class, 'login']);
 
+Route::get('recipes/search', [RecipeController::class, 'search']);
+
+Route::get('recipes/{id}', [RecipeController::class, 'show'])
+    ->where('id', '[0-9]+');
+
 Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('logout', [AuthController::class, 'logout']);
@@ -19,11 +24,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('recipes', [RecipeController::class, 'store']);
 
-        Route::get('recipes/search', [RecipeController::class, 'search']);
-
-        Route::get('recipes/{id}', [RecipeController::class, 'show'])
-            ->where('id', '[0-9]+');
-        
         Route::post('recipes/{id}/rate', [RecipeController::class, 'rate'])
             ->where('id', '[0-9]+');
 

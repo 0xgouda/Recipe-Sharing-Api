@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Rate;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
@@ -36,9 +37,11 @@ class RecipeController extends Controller
         if ($recipe != null) {
             $rate = Rate::where('recipe_id',  '=', $recipe->id)->avg('rate');
         }
+        $author = User::find($recipe->user_id);
 
         if ($recipe) {
             return response()->json([
+                'author' => $author->name,
                 'title' => $recipe->title,
                 'ingredients' => $recipe->ingredients,
                 'instructions' => $recipe->instructions,
