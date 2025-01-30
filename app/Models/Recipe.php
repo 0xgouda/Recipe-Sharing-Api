@@ -15,4 +15,10 @@ class Recipe extends Model
     public function rates() {
         return $this->hasMany(Rate::class);
     }
+
+    public function casts() {
+        return [
+            'ingredients' => 'array'
+        ];
+    }
 }

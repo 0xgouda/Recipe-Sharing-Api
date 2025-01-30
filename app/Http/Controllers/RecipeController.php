@@ -17,7 +17,7 @@ class RecipeController extends Controller
 
         $recipe = $request->user()->recipes()->create([
             'title' => $request->title,
-            'ingredients' => json_encode($request->ingredients, JSON_PRETTY_PRINT),
+            'ingredients' => $request->ingredients,
             'instructions' => $request->instructions
         ]);
 
@@ -40,7 +40,7 @@ class RecipeController extends Controller
         if ($recipe) {
             return response()->json([
                 'title' => $recipe->title,
-                'ingredients' => json_decode($recipe->ingredients),
+                'ingredients' => $recipe->ingredients,
                 'instructions' => $recipe->instructions,
                 'rate' => $rate
             ], 200);
