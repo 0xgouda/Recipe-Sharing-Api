@@ -11,4 +11,8 @@ class Recipe extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function rates() {
+        return $this->hasMany(Rate::class);
+    }
 }

@@ -26,4 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('recipes/{id}', [RecipeController::class, 'show'])
             ->where('id', '[0-9]+');
+        
+        Route::post('recipes/{id}/rate', [RecipeController::class, 'rate'])
+            ->where('id', '[0-9]+');
 });

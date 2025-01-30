@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rate;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
 
@@ -32,11 +33,16 @@ class RecipeController extends Controller
     public function show(Request $request) {
         $recipe = Recipe::find($request->id);
 
+        if ($recipe != null) {
+            $rate = Rate::where('recipe_id',  '=', $recipe->id)->avg('rate');
+        }
+
         if ($recipe) {
             return response()->json([
                 'title' => $recipe->title,
                 'ingredients' => json_decode($recipe->ingredients),
-                'instructions' => $recipe->instructions
+                'instructions' => $recipe->instructions,
+                'rate' => $rate
             ], 200);
         } else {
             return response()->json(["message" => "Recipe Not Found"], 404);
@@ -55,5 +61,21 @@ class RecipeController extends Controller
             ['instructions', 'like', "%$request->instructions%"],
             ['ingredients', 'like', "%$request->ingredients%"]
         ])->limit(100)->get();
+    }
+
+    public function rate(Request $request) {
+        $request->validate([
+            'rate' => 'required|integer|in:1,2,3,4,5'
+        ]);
+
+        Rate::upsert(
+            [
+                        'user_id' => $request->user()->id, 
+                        'recipe_id' => $request->id, 
+                        'rate' => $request->rate
+                    ]
+        , ['user_id', 'recipe_id'], ['rate']);
+
+        return response()->json('Rating Saved Successfully!');
     }
 }
