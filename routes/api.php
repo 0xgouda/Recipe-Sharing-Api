@@ -14,6 +14,9 @@ Route::get('recipes/search', [RecipeController::class, 'search']);
 Route::get('recipes/{id}', [RecipeController::class, 'show'])
     ->where('id', '[0-9]+');
 
+Route::get('users/{user_id}/recipes', [RecipeController::class, 'showBy'])
+    ->where('user_id', '[0-9]+');
+
 Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('logout', [AuthController::class, 'logout']);

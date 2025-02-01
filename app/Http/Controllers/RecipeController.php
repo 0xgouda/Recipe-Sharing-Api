@@ -41,7 +41,8 @@ class RecipeController extends Controller
 
         if ($recipe) {
             return response()->json([
-                'author' => $author->name,
+                'author_id' => $author->id,
+                'author_name' => $author->name,
                 'title' => $recipe->title,
                 'ingredients' => $recipe->ingredients,
                 'instructions' => $recipe->instructions,
@@ -50,6 +51,10 @@ class RecipeController extends Controller
         } else {
             return response()->json(["message" => "Recipe Not Found"], 404);
         }
+    }
+
+    public function showBy(Request $request) {
+        return Recipe::where('user_id', '=', $request->user_id)->get();
     }
 
     public function search(Request $request) {
