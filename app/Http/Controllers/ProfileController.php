@@ -50,4 +50,18 @@ class ProfileController extends Controller
 
         return response()->json("Successfully Saved Recipe to Favorites!");
     }
+
+    public function unsave(Request $request) {
+        $user = $request->user();
+        
+        $arr = $user->favorites;
+        $key = array_search($request->id, $arr);
+        if ($key !== false) {
+            unset($arr[$key]);
+            $user->favorites = $arr;
+            $user->save();
+        }
+
+        return response()->json("Successfully Removed Recipe from Favorites!");
+    }
 }

@@ -30,6 +30,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('recipes/{id}/rate', [RecipeController::class, 'rate'])
             ->where('id', '[0-9]+');
 
-        Route::post('recipes/{id}/save', [ProfileController::class, 'save'])
+        Route::put('recipes/{id}/save', [ProfileController::class, 'save'])
+            ->where('id', '[0-9]+');
+        
+        Route::put('recipes/{id}/unsave', [ProfileController::class, 'unsave'])
             ->where('id', '[0-9]+');
 });
