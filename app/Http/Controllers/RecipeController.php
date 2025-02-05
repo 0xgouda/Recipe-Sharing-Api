@@ -36,8 +36,8 @@ class RecipeController extends Controller
 
         if ($recipe != null) {
             $rate = Rate::where('recipe_id',  '=', $recipe->id)->avg('rate');
+            $author = User::find($recipe->user_id);
         }
-        $author = User::find($recipe->user_id);
 
         if ($recipe) {
             return response()->json([
