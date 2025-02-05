@@ -54,7 +54,16 @@ class RecipeController extends Controller
     }
 
     public function showBy(Request $request) {
-        return Recipe::where('user_id', '=', $request->user_id)->get();
+        return Recipe::where('user_id', '=', $request->user_id)
+            ->select('id', 'user_id', 'title', 'instructions', 'ingredients')->get()
+            ->map(function($recipe) {
+                return [
+                    'recipe_id' => $recipe->id,
+                    'title' => $recipe->title,
+                    'ingredients' => $recipe->ingredients,
+                    'instructions' => $recipe->instructions
+                ];
+            });
     }
 
     public function search(Request $request) {
@@ -68,7 +77,16 @@ class RecipeController extends Controller
             ['title', 'like', "%$request->title%"],
             ['instructions', 'like', "%$request->instructions%"],
             ['ingredients', 'like', "%$request->ingredients%"]
-        ])->limit(100)->get();
+        ])->select('id', 'user_id', 'title', 'instructions', 'ingredients')->limit(100)->get()
+            ->map(function($recipe) {
+                return [
+                    'recipe_id' => $recipe->id,
+                    'author_id' => $recipe->user_id,
+                    'title' => $recipe->title,
+                    'ingredients' => $recipe->ingredients,
+                    'instructions' => $recipe->instructions
+                ];
+            });
     }
 
     public function rate(Request $request) {
